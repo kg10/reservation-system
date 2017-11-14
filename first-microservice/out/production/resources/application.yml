@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: main-service
+server:
+  port: 8072
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8070/eureka/
+
+#description service in */info
+info:
+  app:
+    name: First part microservice
+    description: This is my work
+    version: 1.0.1
