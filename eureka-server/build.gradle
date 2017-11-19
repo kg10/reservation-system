@@ -1,3 +1,5 @@
+
+
 buildscript {
 	ext {
 		springBootVersion = '1.5.8.RELEASE'
@@ -18,10 +20,10 @@ group = 'com.project'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
+
 repositories {
 	mavenCentral()
 }
-
 
 ext {
 	springCloudVersion = 'Dalston.SR4'

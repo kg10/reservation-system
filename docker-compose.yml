@@ -1,0 +1,23 @@
+version: '2'
+services:
+  postgres:
+    image: postgres
+    ports:
+    - "5432:5432"
+  eureka-service:
+    image: eureka-service
+    ports:
+    - "8070:8070"
+  main-service:
+    image: main-service
+    ports:
+    - "8071:8071"
+  client:
+    image: client
+    ports:
+    - "8072:8072"
+  zuul-application:
+    image: zuul-application
+    ports:
+    - "8073:8073"
+ 

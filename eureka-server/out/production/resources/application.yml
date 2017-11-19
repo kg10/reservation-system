@@ -1,6 +1,17 @@
+spring:
+  application:
+    name:eureka-service
+
+server:
+  port: 8070
+
 eureka:
   client:
     registerWithEureka: false
     fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://192.168.99.100:8070/eureka/
     server:
       waitTimeInMsWhenSyncEmpty: 0
+
+##testy do dockera
