@@ -57,6 +57,30 @@ public class AdministratorServiceImpl implements AdministratorService {
 		client.setActive(false);
 		clientRepository.save(client);
 	}
-	
 
+	@Override
+	public void setServiceById(Long id, com.project.Model.Service service) {
+		com.project.Model.Service s = serviceRepository.findOneById(id);
+		s.setDescriptionService(service.getDescriptionService());
+		s.setDuration(service.getDuration());
+		s.setPrice(service.getPrice());
+		serviceRepository.save(s);
+	}
+
+	@Override
+	public void setPersonnelById(Long id, Personnel personnel) {
+		Personnel p = personnelRepository.findById(id);
+		//p.setId(personnel.getId());
+		p.setFirstName(personnel.getFirstName());
+		p.setLastName(personnel.getLastName());
+		p.setDescriptionPerson(personnel.getDescriptionPerson());
+		personnelRepository.save(p);
+	}
+
+	@Override
+	public void disablePersonnel(Long id) {
+		Personnel personnel = personnelRepository.findById(id);
+		personnel.setActive(false);
+		personnelRepository.save(personnel);
+	}
 }

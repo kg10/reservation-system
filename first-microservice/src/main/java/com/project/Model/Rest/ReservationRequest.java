@@ -3,25 +3,9 @@ package com.project.Model.Rest;
 import com.project.Model.Reservation;
 
 public class ReservationRequest {
-	private String lastName;
-	private String serviceName;
+	private Long idPersonnel;
+	private Long idService;
 	private Reservation reservation;
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public String getServiceName() {
-		return serviceName;
-	}
-
-	public void setServiceName(String serviceName) {
-		this.serviceName = serviceName;
-	}
 
 	public Reservation getReservation() {
 		return reservation;
@@ -31,4 +15,19 @@ public class ReservationRequest {
 		this.reservation = reservation;
 	}
 
+	public Long getIdPersonnel() {
+		return idPersonnel;
+	}
+
+	public void setIdPersonnel(Long idPersonnel) {
+		this.idPersonnel = idPersonnel;
+	}
+
+	public Long getIdService() {
+		return idService;
+	}
+
+	public void setIdService(Long idService) {
+		this.idService = idService;
+	}
 }

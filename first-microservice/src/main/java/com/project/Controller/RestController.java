@@ -3,8 +3,10 @@ package com.project.Controller;
 import java.util.Date;
 import java.util.List;
 
+import com.project.Model.Rest.HistoryReservation;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -33,6 +35,21 @@ public class RestController {
     @Autowired
     private ClientService clientService;
 
+    @GetMapping(value = "/login")
+    public ResponseEntity<String> login(@RequestParam String login) {
+        try {
+            Client client= clientService.findOneByLogin(login);
+            if(client.getRole().equals("USER"))
+                return new ResponseEntity<String>(JSONObject.quote(client.getRole()),HttpStatus.OK);
+            else if(client.getRole().equals("ADMIN"))
+                return new ResponseEntity<String>(JSONObject.quote(client.getRole()),HttpStatus.ACCEPTED);
+            else
+                throw new Exception();
+        } catch (Exception e) {
+            return new ResponseEntity<String>(HttpStatus.UNAUTHORIZED);
+        }
+    }
+
     @ApiOperation(value = "Registation user")
     @PostMapping(value = "/addClient", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> addPerson(@RequestBody Client client) {
@@ -49,6 +66,17 @@ public class RestController {
     public ResponseEntity<Void> disableClient(@PathVariable("id") Long id) {
         try {
             administratorService.disableClient(id);
+            return new ResponseEntity<Void>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @ApiOperation(value = "Personel deactivation")
+    @GetMapping("/disablePersonnel/{id}")
+    public ResponseEntity<Void> disablePersonnel(@PathVariable("id") Long id) {
+        try {
+            administratorService.disablePersonnel(id);
             return new ResponseEntity<Void>(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -75,29 +103,57 @@ public class RestController {
         }
     }
 
-    @GetMapping(value = "/findServiceByLastName")
-    public ResponseEntity<List<Service>> findServiceByLastName(@RequestParam String lastName) {
+    @GetMapping(value = "/findServiceByPersonnelId")
+    public ResponseEntity<List<Service>> findServiceByLastName(@RequestParam Long id) {
         try {
-            return new ResponseEntity<List<Service>>(clientService.findServices(lastName), HttpStatus.OK);
+            return new ResponseEntity<List<Service>>(clientService.findServices(id), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<List<Service>>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @GetMapping(value = "/findPersonnelByServiceName")
-    public ResponseEntity<List<Personnel>> selectPersonnelByServiceName(@RequestParam String descr) {
+    @GetMapping(value = "/findAllServices")
+    public ResponseEntity<List<Service>> findAllServices() {
         try {
-            return new ResponseEntity<List<Personnel>>(clientService.findPersonnels(descr), HttpStatus.OK);
+            return new ResponseEntity<List<Service>>(clientService.findAllServices(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<List<Service>>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(value = "/findHistoryService")
+    public ResponseEntity<List<HistoryReservation>> findHistoryService(@RequestParam String login) {
+        try {
+            return new ResponseEntity<List<HistoryReservation>>(clientService.getAllReservationByLogin(login), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<List<HistoryReservation>>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(value = "/findPersonnelByServiceId")
+    public ResponseEntity<List<Personnel>> selectPersonnelByServiceName(@RequestParam Long id) {
+        try {
+            return new ResponseEntity<List<Personnel>>(clientService.findPersonnels(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<List<Personnel>>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(value = "/findAllPersonnel")
+    public ResponseEntity<List<Personnel>> selectPersonnel() {
+        try {
+            System.out.println("test");
+            return new ResponseEntity<List<Personnel>>(clientService.findAllPersonnel(), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<List<Personnel>>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping(value = "/findTime")
-    public ResponseEntity<TimeTable> checkTimeTable(@RequestParam String lastName,
+    public ResponseEntity<TimeTable> checkTimeTable(@RequestParam Long id,
                                                     @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
         try {
-            return new ResponseEntity<TimeTable>(clientService.findTimeTable(lastName, date), HttpStatus.OK);
+            return new ResponseEntity<TimeTable>(clientService.findTimeTable(id, date), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<TimeTable>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -127,13 +183,43 @@ public class RestController {
         }
     }
 
-    @GetMapping(value = "/checkFreeTime")
-    public ResponseEntity<List<FreeTimeResponse>> checkFreeTime(@RequestParam String lastName,
-                                                                @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
+    @GetMapping(value = "/getFreeTime")
+    public ResponseEntity<List<String>> checkFreeTime(@RequestParam Long id,
+                                                                @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date date, @RequestParam Long idService) {
         try {
-            return new ResponseEntity<List<FreeTimeResponse>>(clientService.checkFreeTime(date, lastName), HttpStatus.OK);
+            return new ResponseEntity<List<String>>(clientService.checkFreeTime(date, id, idService), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<List<FreeTimeResponse>>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<List<String>>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> registerNewAcount(@RequestBody Client client) {
+        try {
+            clientService.createNewAccount(client);
+            return new ResponseEntity<Void>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping(value = "/updateService/{id}")
+    public ResponseEntity<Void> updateService ( @PathVariable Long id, @RequestBody Service service){
+        try {
+            administratorService.setServiceById(id, service);
+            return new ResponseEntity<Void>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping(value = "/updatePersonnel/{id}")
+    public ResponseEntity<Void> updatePerson( @PathVariable Long id, @RequestBody Personnel person){
+        try {
+            administratorService.setPersonnelById(id, person);
+            return new ResponseEntity<Void>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

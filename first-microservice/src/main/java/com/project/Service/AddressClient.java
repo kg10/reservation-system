@@ -8,14 +8,15 @@ import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
-
-@FeignClient("client")
-public interface AddressClient {
-
-    @RequestMapping("/getAddress")
-    public List<Address> getAddress();
-
+////////////////////////// zakomentowane do testow bez dockera
+//@FeignClient("client")
+//public interface AddressClient {
+//
+//    @RequestMapping("/getAddress")
+//    public List<Address> getAddress();
+//}
+/////////////////////////////////////////////////////////////////////////////
 //    @RequestLine("POST /")
 //    @Headers("Content-Type: application/json")
 //    Address createAddress(Address address);
-}
+//}

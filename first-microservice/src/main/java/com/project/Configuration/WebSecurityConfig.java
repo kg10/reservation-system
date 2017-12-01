@@ -20,35 +20,39 @@ import com.project.Service.ClientServiceImpl;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	@Autowired
-	private ClientDetailService clientDetailService;
+    @Autowired
+    private ClientDetailService clientDetailService;
 
-	@Autowired
-	public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(clientDetailService).passwordEncoder(passwordencoder());
-	}
+    @Autowired
+    public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(clientDetailService).passwordEncoder(passwordencoder());
+    }
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/findall").hasAnyAuthority("ADMIN")
-				.antMatchers("http://localhost:8090/**").hasAnyAuthority("ADMIN").antMatchers("/addservice").permitAll()
-				.and().httpBasic().and().csrf().disable();
-	}
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+                //.antMatchers("/reg/**").denyAll()
+                .antMatchers("/reg/findAllPersonnel").hasAnyAuthority("ADMIN")
+                .antMatchers("/reg/findAllServices").hasAnyAuthority("USER")
+                .antMatchers("/login","/reg/register").permitAll()
+                .and().httpBasic()
+                .and().csrf().disable();
+    }
 
-	@Bean(name = "passwordEncoder")
-	public PasswordEncoder passwordencoder() {
-		return new BCryptPasswordEncoder();
-	}
+    @Bean(name = "passwordEncoder")
+    public PasswordEncoder passwordencoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-	@Bean
-	public AdministratorService administratorService() {
-		return new AdministratorServiceImpl();
-	}
-	
-	@Bean
-	public ClientService clientService() {
-		return new ClientServiceImpl();
-	}
-	
-	
+    @Bean
+    public AdministratorService administratorService() {
+        return new AdministratorServiceImpl();
+    }
+
+    @Bean
+    public ClientService clientService() {
+        return new ClientServiceImpl();
+    }
+
+
 }

@@ -7,7 +7,6 @@ public class FreeTimeResponse {
 	private Time timeTo;
 
 	public FreeTimeResponse() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public FreeTimeResponse(Time timeFrom, Time timeTo) {

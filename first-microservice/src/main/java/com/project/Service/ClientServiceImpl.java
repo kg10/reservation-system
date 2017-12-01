@@ -2,24 +2,21 @@ package com.project.Service;
 
 import java.sql.Time;
 import java.text.ParseException;
+import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.project.Model.*;
+import com.project.Model.Rest.HistoryReservation;
+import com.project.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.project.Model.Personnel;
-import com.project.Model.Reservation;
-import com.project.Model.Service;
-import com.project.Model.TimeTable;
 import com.project.Model.Rest.FreeTimeResponse;
 import com.project.Model.Rest.ReservationRequest;
-import com.project.Repository.PersonnelRepository;
-import com.project.Repository.ReservationRepository;
-import com.project.Repository.ServiceRepository;
-import com.project.Repository.TimeTableRepository;
 import com.project.Utils.Convert;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class ClientServiceImpl implements ClientService {
 	@Autowired
@@ -30,26 +27,51 @@ public class ClientServiceImpl implements ClientService {
 	private TimeTableRepository timeTableRepository;
 	@Autowired
 	private ReservationRepository reservationRepository;
+	@Autowired
+	private ClientRepository clientRepository;
 
 	@Override
-	public List<Service> findServices(String lastName) {
-		return serviceRepository.findByPersonnel_LastName(lastName);
+	public List<Service> findServices(Long id){
+		return serviceRepository.findByPersonnel_Id(id);
 	}
 
 	@Override
-	public List<Personnel> findPersonnels(String descriptionService) {
-		return personnelRepository.findByService_DescriptionService(descriptionService);
+	public List<Personnel> findPersonnels(Long id) {
+		return personnelRepository.findByService_Id(id);
 	}
 
 	@Override
-	public TimeTable findTimeTable(String lastName, Date date) {
-		return timeTableRepository.findByDayAndPersonnel_LastName(Convert.convertDateToDay(date), lastName);
+	public List<Personnel> findAllPersonnel() {
+		return personnelRepository.findAll();
+	}
+
+	@Override
+	public List<Service> findAllServices() {
+		return serviceRepository.findAll();
+	}
+
+	@Override
+	public void createNewAccount(Client client) {
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		client.setPassword(passwordEncoder.encode(client.getPassword()));
+		client.setRole("USER");
+		clientRepository.save(client);
+	}
+
+	@Override
+	public Client findOneByLogin(String login) {
+		return clientRepository.findOneByLogin(login);
+	}
+
+	@Override
+	public TimeTable findTimeTable(Long id, Date date) {
+		return timeTableRepository.findByDayAndPersonnel_Id(Convert.convertDateToDay(date), id);
 	}
 
 	@Override
 	public Boolean addReservation(ReservationRequest reservationRequest) throws ParseException {
-		Personnel person = personnelRepository.findOneByLastName(reservationRequest.getLastName());
-		Service service = serviceRepository.findOneByDescriptionService(reservationRequest.getServiceName());
+		Personnel person = personnelRepository.findById(reservationRequest.getIdPersonnel());
+		Service service = serviceRepository.findOneById(reservationRequest.getIdService());
 		if (person == null || service == null)
 			return false;
 		Reservation reservation = reservationRequest.getReservation();
@@ -76,14 +98,17 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public List<FreeTimeResponse> checkFreeTime(Date date, String lastName) {
-		TimeTable timeTable = timeTableRepository.findByDayAndPersonnel_LastName(Convert.convertDateToDay(date),
-				lastName);
-		List<Reservation> reservations = reservationRepository.findByDateAndPersonnel_LastNameOrderByTimeFromAsc(date,
-				lastName);
+	public List<String> checkFreeTime(Date date, Long id, Long idService) {
+		TimeTable timeTable = timeTableRepository.findByDayAndPersonnel_Id(Convert.convertDateToDay(date),
+				id);
+		List<Reservation> reservations = reservationRepository.findByDateAndPersonnel_IdOrderByTimeFromAsc(date,
+				id);
+		Service service = serviceRepository.findOneById(idService);
 		List<FreeTimeResponse> times = new ArrayList<>();
 		Reservation tmp = new Reservation();
 		int iter = 0;
+		List<String> timeList = new ArrayList<>();
+		LocalTime timeService = service.getDuration().toLocalTime();
 
 		if (reservations.size() != 0) {
 			for (Reservation r : reservations) {
@@ -99,7 +124,43 @@ public class ClientServiceImpl implements ClientService {
 			times.add(new FreeTimeResponse(tmp.getTimeTo(), timeTable.getTimeTo()));
 		} else
 			times.add(new FreeTimeResponse(timeTable.getTimeFrom(), timeTable.getTimeTo()));
-		return times;
+
+		for(FreeTimeResponse f:times){
+			LocalTime timeFrom = f.getTimeFrom().toLocalTime();
+			LocalTime timeTo = f.getTimeTo().toLocalTime();
+			Duration duration = Duration.between(timeFrom,timeTo);
+
+			while(duration.getSeconds()>0){
+				if((Duration.between(timeFrom.plusMinutes(timeService.getMinute()).plusHours(timeService.getHour()),timeTo)).getSeconds()<0)
+					break;
+				timeList.add(timeFrom.toString());
+				timeFrom = timeFrom.plusMinutes(15L);
+				duration = Duration.between(timeFrom,timeTo);
+			}
+		}
+
+		for(String a: timeList){
+			System.out.println(a);
+		}
+
+		return timeList;
 	}
 
+	@Override
+	public List<HistoryReservation> getAllReservationByLogin(String login) {
+		List<Reservation> reservationList = reservationRepository.findAllByClient_Login(login);
+		List<HistoryReservation> historyList = new ArrayList<>();
+		HistoryReservation history = new HistoryReservation();
+		for(Reservation r : reservationList){
+			history.setId(r.getId());
+			history.setDate(r.getDate());
+			history.setPersonnel(r.getPersonnel().getFirstName() + " " + r.getPersonnel().getLastName());
+			history.setService(r.getService().getDescriptionService());
+			history.setStatus(r.getStatus());
+			history.setTimeFrom(r.getTimeFrom());
+			history.setTimeTo(r.getTimeTo());
+			historyList.add(history);
+		}
+		return historyList;
+	}
 }

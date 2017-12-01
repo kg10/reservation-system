@@ -25,7 +25,7 @@ public class Personnel {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String firstName;
-	@Column(unique = true)
+//	@Column(unique = true)
 	private String lastName;
 	private String descriptionPerson;
 	@JsonProperty(access = Access.AUTO)

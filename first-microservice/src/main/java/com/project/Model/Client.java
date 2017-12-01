@@ -1,9 +1,6 @@
 package com.project.Model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -23,12 +20,13 @@ public class Client {
 	@ApiModelProperty(notes = "User`s login", required = true)
 	@NotEmpty(message = "Please enter login!")
 	@Size(min = 4, max = 15, message = "4-15 Signs")
-	@Column(unique = true)
+//	@Column(unique = true)
 	private String login;
 	@ApiModelProperty(notes = "User`s password", required = true)
 	@NotEmpty(message = "Please enter login!")
 	@Size(min = 3, max = 80, message = "3-15 Signs")
 	private String password;
+	@JsonProperty(access = Access.AUTO)
 	@ApiModelProperty(notes = "This`s user or admin", required = true)
 	private String role;
 	@ApiModelProperty(notes = "Name")
@@ -41,6 +39,8 @@ public class Client {
 	private String email;
 	@JsonProperty(access = Access.AUTO)
 	private Boolean active = true;
+	@OneToOne
+	private Reservation reservation;
 
 	public Client() {
 	}
@@ -68,6 +68,14 @@ public class Client {
 		this.lastName = lastName;
 		this.email = email;
 		this.active = active;
+	}
+
+	public Reservation getReservation() {
+		return reservation;
+	}
+
+	public void setReservation(Reservation reservation) {
+		this.reservation = reservation;
 	}
 
 	public String getRole() {

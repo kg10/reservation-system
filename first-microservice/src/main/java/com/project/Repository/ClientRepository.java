@@ -9,9 +9,9 @@ import com.project.Model.Client;
 
 @Repository
 public interface ClientRepository extends CrudRepository<Client, Long>{
-	public List<Client> findAll();
-	public Client findByLogin(String login);
-	public List<Client> findByFirstName(String firstname);
-	public Client findById(Long id);
-	
+	List<Client> findAll();
+	Client findByLogin(String login);
+	List<Client> findByFirstName(String firstname);
+	Client findOneByLogin(String login);
+	Client findById(Long id);
 }

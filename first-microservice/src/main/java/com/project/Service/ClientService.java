@@ -1,25 +1,38 @@
 package com.project.Service;
 
+import com.project.Model.Client;
+import com.project.Model.Personnel;
+import com.project.Model.Rest.FreeTimeResponse;
+import com.project.Model.Rest.HistoryReservation;
+import com.project.Model.Rest.ReservationRequest;
+import com.project.Model.Service;
+import com.project.Model.TimeTable;
+
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
-import com.project.Model.Personnel;
-import com.project.Model.Service;
-import com.project.Model.TimeTable;
-import com.project.Model.Rest.FreeTimeResponse;
-import com.project.Model.Rest.ReservationRequest;
-
 public interface ClientService {
-	public List<Service> findServices(String lastName);
+	List<Service> findServices(Long id);
 
-	public List<Personnel> findPersonnels(String descriptionService);
+	List<Personnel> findPersonnels(Long id);
 
-	public TimeTable findTimeTable(String lastName, Date date);
+	TimeTable findTimeTable(Long id, Date date);
 
-	public Boolean addReservation(ReservationRequest reservationRequest) throws ParseException;
+	Boolean addReservation(ReservationRequest reservationRequest) throws ParseException;
 
-	public void disableReservation(String serviceName, Long id, Date date);
+	void disableReservation(String serviceName, Long id, Date date);
 
-	public List<FreeTimeResponse> checkFreeTime(Date date, String lastName);
+	List<String> checkFreeTime(Date date, Long id,Long idService);
+
+	List<Personnel> findAllPersonnel();
+
+	List<Service> findAllServices();
+
+	void createNewAccount(Client client);
+
+	Client findOneByLogin(String login);
+
+	List<HistoryReservation> getAllReservationByLogin(String login);
+
 }

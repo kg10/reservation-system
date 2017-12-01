@@ -1,16 +1,23 @@
 package com.project.Service;
 
 import com.project.Model.Client;
+import com.project.Model.Personnel;
+import com.project.Model.Service;
 import com.project.Model.ServiceWrapper;
 import com.project.Model.Rest.TimeTableRequest;
 
 public interface AdministratorService {
-	public void addPersonnelAndService(ServiceWrapper service);
+	void addPersonnelAndService(ServiceWrapper service);
 
-	public void addTimeTableToPerson(TimeTableRequest timeTableRequest);
+	void addTimeTableToPerson(TimeTableRequest timeTableRequest);
 
-	public void createClient(Client client);
+	void createClient(Client client);
 	
-	public void disableClient(Long id);
+	void disableClient(Long id);
 
+	void disablePersonnel(Long id);
+
+	void setServiceById(Long id, Service service);
+
+	void setPersonnelById(Long id, Personnel personnel);
 }

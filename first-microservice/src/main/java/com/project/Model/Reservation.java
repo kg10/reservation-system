@@ -3,13 +3,7 @@ package com.project.Model;
 import java.sql.Time;
 import java.util.Date;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -29,6 +23,9 @@ public class Reservation {
 	@ManyToOne
 	@JoinColumn(name = "personnel_id")
 	private Personnel personnel;
+	@JsonProperty(access = Access.AUTO)
+	@OneToOne(mappedBy = "reservation")
+	private Client client;
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "service_id")
@@ -50,6 +47,14 @@ public class Reservation {
 		this.personnel = personnel;
 		this.service = service;
 		this.date = date;
+	}
+
+	public Client getClient() {
+		return client;
+	}
+
+	public void setClient(Client client) {
+		this.client = client;
 	}
 
 	public Date getDate() {

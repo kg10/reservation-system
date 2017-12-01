@@ -4,17 +4,18 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
-@EnableEurekaClient
-@EnableFeignClients
+//@EnableEurekaClient
+//@EnableFeignClients
 public class FirstMicroserviceApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(FirstMicroserviceApplication.class, args);
-	}
 
-	//String url = "http://localhost:8080/getAddress";
+
+		//String url = "http://localhost:8080/getAddress";
 //
 //		AddressClient client = Feign.builder()
 //				.encoder(new GsonEncoder())
@@ -28,13 +29,13 @@ public class FirstMicroserviceApplication {
 
 //		System.out.println(all);
 
-//		int i = 0;
-//		while (i < 5) {
-//			String password = "abc";
-//			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-//			String hashedPassword = passwordEncoder.encode(password);
-//
-//			System.out.println(hashedPassword);
-//			i++;
-//		}
+
+		String password = "abc";
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		String hashedPassword = passwordEncoder.encode(password);
+
+		System.out.println(hashedPassword);
+	}
+
+
 }

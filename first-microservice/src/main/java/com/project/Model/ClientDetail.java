@@ -47,7 +47,12 @@ public class ClientDetail extends Client implements UserDetails {
 
 	@Override
 	public boolean isEnabled() {
-		return true;
+		return super.getActive();
+	}
+
+	@Override
+	public String getPassword(){
+		return super.getPassword();
 	}
 
 }
