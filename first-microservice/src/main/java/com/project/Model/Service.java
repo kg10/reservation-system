@@ -27,10 +27,10 @@ public class Service {
 	private String descriptionService;
 	private Time duration;
 	private Integer price;
-	//@JsonIgnore
-	@JsonProperty(access = Access.WRITE_ONLY)
-	@ManyToMany(cascade = { CascadeType.ALL })
-	@JoinTable(name = "service_personnel", joinColumns = { @JoinColumn }, inverseJoinColumns = { @JoinColumn })
+	@JsonProperty(access = Access.AUTO)
+//	@ManyToMany(cascade = { CascadeType.ALL })
+//	@JoinTable(name = "service_personnel", joinColumns = { @JoinColumn }, inverseJoinColumns = { @JoinColumn })
+	@ManyToMany(mappedBy = "service", cascade = { CascadeType.ALL })
 	private Set<Personnel> personnel = new HashSet<>();
 
 	@JsonIgnore

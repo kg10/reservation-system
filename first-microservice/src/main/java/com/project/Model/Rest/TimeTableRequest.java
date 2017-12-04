@@ -5,15 +5,15 @@ import java.util.List;
 import com.project.Model.TimeTable;
 
 public class TimeTableRequest {
-	private String lastName;
+	private Long idPerson;
 	private List<TimeTable> timeTable;
 
-	public String getLastName() {
-		return lastName;
+	public Long getIdPerson() {
+		return idPerson;
 	}
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	public void setIdPerson(Long idPerson) {
+		this.idPerson = idPerson;
 	}
 
 	public List<TimeTable> getTimeTable() {

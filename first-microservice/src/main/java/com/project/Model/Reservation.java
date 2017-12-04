@@ -24,7 +24,7 @@ public class Reservation {
 	@JoinColumn(name = "personnel_id")
 	private Personnel personnel;
 	@JsonProperty(access = Access.AUTO)
-	@OneToOne(mappedBy = "reservation")
+	@OneToOne(cascade = { CascadeType.ALL })
 	private Client client;
 	@JsonIgnore
 	@ManyToOne

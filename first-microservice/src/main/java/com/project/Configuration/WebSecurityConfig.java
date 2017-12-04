@@ -32,8 +32,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 //.antMatchers("/reg/**").denyAll()
-                .antMatchers("/reg/findAllPersonnel").hasAnyAuthority("ADMIN")
-                .antMatchers("/reg/findAllServices").hasAnyAuthority("USER")
+                //.antMatchers("/reg/findAllPersonnel").hasAnyAuthority("ADMIN")
+                //.antMatchers("/reg/findAllServices").hasAnyAuthority("USER")
                 .antMatchers("/login","/reg/register").permitAll()
                 .and().httpBasic()
                 .and().csrf().disable();

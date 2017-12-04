@@ -1,12 +1,9 @@
 package com.project.Service;
 
-import com.project.Model.Client;
-import com.project.Model.Personnel;
+import com.project.Model.*;
 import com.project.Model.Rest.FreeTimeResponse;
 import com.project.Model.Rest.HistoryReservation;
 import com.project.Model.Rest.ReservationRequest;
-import com.project.Model.Service;
-import com.project.Model.TimeTable;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -35,4 +32,5 @@ public interface ClientService {
 
 	List<HistoryReservation> getAllReservationByLogin(String login);
 
+	void disableReserv(Long id, Boolean status);
 }

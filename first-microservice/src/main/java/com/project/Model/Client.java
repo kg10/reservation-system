@@ -39,7 +39,7 @@ public class Client {
 	private String email;
 	@JsonProperty(access = Access.AUTO)
 	private Boolean active = true;
-	@OneToOne
+	@OneToOne(mappedBy = "client")
 	private Reservation reservation;
 
 	public Client() {

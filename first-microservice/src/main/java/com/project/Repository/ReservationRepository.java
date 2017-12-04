@@ -18,4 +18,6 @@ public interface ReservationRepository extends CrudRepository<Reservation, Long>
 	List<Reservation> findByDateAndPersonnel_IdOrderByTimeFromAsc(Date date, Long id);
 
 	List<Reservation> findAllByClient_Login(String login);
+
+	Reservation findOneById(Long id);
 }

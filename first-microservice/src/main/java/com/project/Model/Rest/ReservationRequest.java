@@ -3,9 +3,18 @@ package com.project.Model.Rest;
 import com.project.Model.Reservation;
 
 public class ReservationRequest {
+	private String loginClient;
 	private Long idPersonnel;
 	private Long idService;
 	private Reservation reservation;
+
+	public String getLoginClient() {
+		return loginClient;
+	}
+
+	public void setLoginClient(String loginClient) {
+		this.loginClient = loginClient;
+	}
 
 	public Reservation getReservation() {
 		return reservation;

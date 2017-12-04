@@ -70,6 +70,7 @@ public class ClientServiceImpl implements ClientService {
 
 	@Override
 	public Boolean addReservation(ReservationRequest reservationRequest) throws ParseException {
+		Client client = clientRepository.findByLogin(reservationRequest.getLoginClient());
 		Personnel person = personnelRepository.findById(reservationRequest.getIdPersonnel());
 		Service service = serviceRepository.findOneById(reservationRequest.getIdService());
 		if (person == null || service == null)
@@ -77,6 +78,7 @@ public class ClientServiceImpl implements ClientService {
 		Reservation reservation = reservationRequest.getReservation();
 		reservation.setPersonnel(person);
 		reservation.setService(service);
+		reservation.setClient(client);
 		LocalTime t1 = reservation.getTimeFrom().toLocalTime();
 		LocalTime t2 = service.getDuration().toLocalTime();
 		LocalTime result = t1.plusHours(t2.getHour()).plusMinutes(t2.getMinute());
@@ -150,8 +152,8 @@ public class ClientServiceImpl implements ClientService {
 	public List<HistoryReservation> getAllReservationByLogin(String login) {
 		List<Reservation> reservationList = reservationRepository.findAllByClient_Login(login);
 		List<HistoryReservation> historyList = new ArrayList<>();
-		HistoryReservation history = new HistoryReservation();
 		for(Reservation r : reservationList){
+			HistoryReservation history = new HistoryReservation();
 			history.setId(r.getId());
 			history.setDate(r.getDate());
 			history.setPersonnel(r.getPersonnel().getFirstName() + " " + r.getPersonnel().getLastName());
@@ -162,5 +164,12 @@ public class ClientServiceImpl implements ClientService {
 			historyList.add(history);
 		}
 		return historyList;
+	}
+
+	@Override
+	public void disableReserv(Long id, Boolean status) {
+		Reservation reservation = reservationRepository.findOneById(id);
+		reservation.setStatus(status);
+		reservationRepository.save(reservation);
 	}
 }

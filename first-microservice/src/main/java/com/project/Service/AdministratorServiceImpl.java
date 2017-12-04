@@ -1,21 +1,20 @@
 package com.project.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import com.project.Model.*;
+import com.project.Model.Rest.HistoryReservation;
+import com.project.Model.Rest.HistoryResponse;
+import com.project.Model.Rest.TimeTableResponse;
+import com.project.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.project.Model.Client;
-import com.project.Model.Personnel;
-import com.project.Model.ServiceWrapper;
-import com.project.Model.TimeTable;
 import com.project.Model.Rest.TimeTableRequest;
-import com.project.Repository.ClientRepository;
-import com.project.Repository.PersonnelRepository;
-import com.project.Repository.ServiceRepository;
-import com.project.Repository.TimeTableRepository;
 
 @Service
 public class AdministratorServiceImpl implements AdministratorService {
@@ -27,6 +26,8 @@ public class AdministratorServiceImpl implements AdministratorService {
 	private TimeTableRepository timeTableRepository;
 	@Autowired
 	private ClientRepository clientRepository;
+	@Autowired
+	private ReservationRepository reservationRepository;
 
 	@Override
 	public void addPersonnelAndService(ServiceWrapper services) {
@@ -35,8 +36,41 @@ public class AdministratorServiceImpl implements AdministratorService {
 	}
 
 	@Override
+	public Long addPersonnel(Personnel person) {
+		Personnel p = personnelRepository.saveAndFlush(person);
+		return p.getId();
+	}
+
+	@Override
+	public void assignPersonToService(Long idPerson, List<Long> listIdService) {
+		Set<Personnel> set = new HashSet<>();
+		Personnel person = personnelRepository.findById(idPerson);
+		set.add(person);
+
+		for(Long id: listIdService){
+			com.project.Model.Service service = serviceRepository.findOneById(id);
+			service.setPersonnel(set);
+			serviceRepository.saveAndFlush(service);
+		}
+	}
+
+	@Override
+	public void assignPersonToService2(Long idPerson, List<String> listService) {
+		Set<com.project.Model.Service> set = new HashSet<>();
+		Personnel person = personnelRepository.findById(idPerson);
+
+
+		for(String name: listService){
+			com.project.Model.Service service = serviceRepository.findOneByDescriptionService(name);
+			set.add(service);
+		}
+		person.setService(set);
+		personnelRepository.saveAndFlush(person);
+	}
+
+	@Override
 	public void addTimeTableToPerson(TimeTableRequest timeTableRequest) {
-		Personnel personnel = personnelRepository.findOneByLastName(timeTableRequest.getLastName());
+		Personnel personnel = personnelRepository.findById(timeTableRequest.getIdPerson());
 		List<TimeTable> timeTable = new ArrayList<>();
 		timeTable = timeTableRequest.getTimeTable();
 		for (TimeTable t : timeTable)
@@ -82,5 +116,44 @@ public class AdministratorServiceImpl implements AdministratorService {
 		Personnel personnel = personnelRepository.findById(id);
 		personnel.setActive(false);
 		personnelRepository.save(personnel);
+	}
+
+	@Override
+	public void deletePersonnel(Long id) {
+		personnelRepository.deleteById(id);
+	}
+
+	@Override
+	public List<TimeTableResponse> getTimeByPersonelId(Long id) {
+		List<TimeTable> time = timeTableRepository.findByPersonnel_Id(id);
+		List<TimeTableResponse> response = new ArrayList<>();
+		for(TimeTable t : time){
+			response.add(new TimeTableResponse(t.getDay(),t.getTimeFrom(),t.getTimeTo()));
+		}
+		return response;
+	}
+
+	@Override
+	public void deleteTimeTable(Long idPerson) {
+		timeTableRepository.deleteByPersonnel_Id(idPerson);
+	}
+
+	@Override
+	public List<HistoryResponse> getAllReservation() {
+		List<Reservation> reservationList = reservationRepository.findAll();
+		List<HistoryResponse> historyList = new ArrayList<>();
+		for(Reservation r : reservationList){
+			HistoryResponse history = new HistoryResponse();
+			history.setId(r.getId());
+			history.setDate(r.getDate());
+			history.setPersonnel(r.getPersonnel().getFirstName() + " " + r.getPersonnel().getLastName());
+			history.setClient(r.getClient().getFirstName() + " " + r.getClient().getLastName());
+			history.setService(r.getService().getDescriptionService());
+			history.setStatus(r.getStatus());
+			history.setTimeFrom(r.getTimeFrom());
+			history.setTimeTo(r.getTimeTo());
+			historyList.add(history);
+		}
+		return historyList;
 	}
 }

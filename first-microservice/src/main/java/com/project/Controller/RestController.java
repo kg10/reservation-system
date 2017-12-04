@@ -3,7 +3,8 @@ package com.project.Controller;
 import java.util.Date;
 import java.util.List;
 
-import com.project.Model.Rest.HistoryReservation;
+import com.project.Model.*;
+import com.project.Model.Rest.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.codehaus.jettison.json.JSONObject;
@@ -15,14 +16,6 @@ import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
 
-import com.project.Model.Client;
-import com.project.Model.Personnel;
-import com.project.Model.Service;
-import com.project.Model.ServiceWrapper;
-import com.project.Model.TimeTable;
-import com.project.Model.Rest.FreeTimeResponse;
-import com.project.Model.Rest.ReservationRequest;
-import com.project.Model.Rest.TimeTableRequest;
 import com.project.Service.AdministratorService;
 import com.project.Service.ClientService;
 
@@ -93,6 +86,35 @@ public class RestController {
         }
     }
 
+    @PostMapping(value = "/addPersonnel", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Long> addPersonnel(@RequestBody Personnel personnel) {
+        try{
+             return new ResponseEntity<Long>(administratorService.addPersonnel(personnel),HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<Long>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping(value = "/assign/{idPerson}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> assignPersonToService(@PathVariable Long idPerson, @RequestBody AssignRequest listDscrService) {
+        try {
+            administratorService.assignPersonToService2(idPerson,listDscrService.getListDscrService());
+            return new ResponseEntity<Void>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping(value = "/disableReservation/{idReservation}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> disableReservation(@PathVariable Long idReservation, @RequestBody Boolean status) {
+        try {
+            clientService.disableReserv(idReservation,status);
+            return new ResponseEntity<Void>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PostMapping(value = "/addTimeTable", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> addPersonnel(@RequestBody TimeTableRequest timeTableRequest) {
         try {
@@ -130,6 +152,15 @@ public class RestController {
         }
     }
 
+    @GetMapping(value = "/findAllHistory")
+    public ResponseEntity<List<HistoryResponse>> findAllHistory() {
+        try {
+            return new ResponseEntity<List<HistoryResponse>>(administratorService.getAllReservation(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<List<HistoryResponse>>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @GetMapping(value = "/findPersonnelByServiceId")
     public ResponseEntity<List<Personnel>> selectPersonnelByServiceName(@RequestParam Long id) {
         try {
@@ -156,6 +187,15 @@ public class RestController {
             return new ResponseEntity<TimeTable>(clientService.findTimeTable(id, date), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<TimeTable>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(value = "/findTimeByPerson")
+    public ResponseEntity<List<TimeTableResponse>> getTimeByPerson(@RequestParam Long id) {
+        try {
+            return new ResponseEntity<List<TimeTableResponse>>(administratorService.getTimeByPersonelId(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<List<TimeTableResponse>>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -222,5 +262,27 @@ public class RestController {
             return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping(value = "/delete")
+    public ResponseEntity<Void> delete( @RequestParam Long id){
+        try {
+            administratorService.deletePersonnel(id);
+            return new ResponseEntity<Void>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(value = "/deleteTime")
+    public ResponseEntity<Void> deleteTime( @RequestParam Long id){
+        try {
+            administratorService.deleteTimeTable(id);
+            return new ResponseEntity<Void>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
 
 }
