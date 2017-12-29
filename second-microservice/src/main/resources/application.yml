@@ -13,3 +13,4 @@ eureka:
     fetchRegistry: true
     serviceUrl:
       defaultZone: http://192.168.99.100:8070/eureka/
+# calosc bylo
