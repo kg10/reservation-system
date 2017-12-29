@@ -22,6 +22,7 @@ import com.project.Service.ClientService;
 @org.springframework.web.bind.annotation.RestController
 @RequestMapping("/reg")
 @Api(value = "Main microservice", description = "Operations for booking services")
+@CrossOrigin
 public class RestController {
     @Autowired
     private AdministratorService administratorService;
@@ -54,12 +55,31 @@ public class RestController {
         }
     }
 
+    @GetMapping("/getClient")
+    public ResponseEntity<ClientResponse> getClient(@RequestParam String login) {
+        try {
+            return new ResponseEntity<ClientResponse>(clientService.findClient(login),HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<ClientResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @ApiOperation(value = "Customer deactivation")
     @PutMapping("/disableClient/{id}")
     public ResponseEntity<Void> disableClient(@PathVariable("id") Long id) {
         try {
             administratorService.disableClient(id);
             return new ResponseEntity<Void>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping(value = "/updateClient/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> editClient(@PathVariable Long id, @RequestBody Client client){
+        try{
+            clientService.updateClient(id, client);
+            return new ResponseEntity<Void>(HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -234,12 +254,11 @@ public class RestController {
     }
 
     @PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> registerNewAcount(@RequestBody Client client) {
-        try {
-            clientService.createNewAccount(client);
-            return new ResponseEntity<Void>(HttpStatus.OK);
+    public ResponseEntity<Long> registerNewAcount(@RequestBody Client client) {
+        try{
+            return new ResponseEntity<Long>(clientService.createNewAccount(client), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Long>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

@@ -1,22 +1,24 @@
 package com.project.Service;
 
 import com.project.Model.Address;
-import feign.Headers;
-import feign.RequestLine;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.netflix.feign.FeignClient;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-////////////////////////// zakomentowane do testow bez dockera
-//@FeignClient("client")
-//public interface AddressClient {
-//
-//    @RequestMapping("/getAddress")
-//    public List<Address> getAddress();
-//}
-/////////////////////////////////////////////////////////////////////////////
-//    @RequestLine("POST /")
-//    @Headers("Content-Type: application/json")
-//    Address createAddress(Address address);
-//}
+//////////////////////// zakomentowane do testow bez dockera
+@FeignClient("client")
+public interface AddressClient {
+
+    @GetMapping("/getAllAddress")
+    List<Address> getAllAddress();
+
+    @GetMapping("/getAddressById/{id}")
+    Address getAddress(@PathVariable("id") Long id);
+
+    @PostMapping("/addAddress")
+    void addAddress(@RequestBody Address address);
+
+    @PutMapping("updateAddress/{id}")
+    void updateAddress(@PathVariable("id") Long id, @RequestBody Address address);
+}
+

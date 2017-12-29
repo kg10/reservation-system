@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="410.5168535012284" y="258.0">com.project.Model.Reservation</node>
+    <node x="658.743622031122" y="129.0">com.project.Model.ServiceWrapper</node>
+    <node x="821.3111895986893" y="129.0">com.project.Model.Personnel</node>
+    <node x="411.7668535012284" y="0.0">com.project.Model.Service</node>
+    <node x="465.78926852989366" y="446.0">com.project.Repository.ClientRepository</node>
+    <node x="445.2668535012284" y="347.0">com.project.Model.Client</node>
+    <node x="117.82051852989366" y="347.0">com.project.Repository.ReservationRepository</node>
+    <node x="1079.2168535012283" y="446.0">com.project.Repository.TimeTableRepository</node>
+    <node x="22.19551852989366" y="446.0">com.project.Repository.ServiceRepository</node>
+    <node x="714.3111895986893" y="446.0">com.project.Controller.RestController</node>
+    <node x="385.28926852989366" y="635.0">com.project.Service.ClientServiceImpl</node>
+    <node x="0.0" y="709.0">com.project.Model.Address</node>
+    <node x="335.78926852989366" y="446.0">com.project.Model.ClientDetail</node>
+    <node x="930.54375" y="0.0">com.project.Model.TimeTable</node>
+    <node x="547.9142685298937" y="635.0">com.project.Service.AdministratorServiceImpl</node>
+    <node x="880.2168535012283" y="446.0">com.project.Repository.PersonnelRepository</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.project.Controller.RestController" target="com.project.Model.TimeTable">
+      <point x="49.19999999999999" y="-14.5" />
+      <point x="825.0111895986893" y="426.0" />
+      <point x="1057.7168535012283" y="426.0" />
+      <point x="1057.7168535012283" y="109.0" />
+      <point x="989.04375" y="109.0" />
+      <point x="6.5" y="14.5" />
+    </edge>
+    <edge source="com.project.Model.ServiceWrapper" target="com.project.Model.Service">
+      <point x="32.5" y="-14.5" />
+      <point x="756.243622031122" y="89.0" />
+      <point x="471.2668535012284" y="89.0" />
+      <point x="17.0" y="14.5" />
+    </edge>
+    <edge source="com.project.Model.Reservation" target="com.project.Model.Client">
+      <point x="34.0625" y="14.5" />
+      <point x="499.0793535012284" y="317.0" />
+      <point x="514.3918535012284" y="317.0" />
+      <point x="29.625" y="-14.5" />
+    </edge>
+    <edge source="com.project.Model.Reservation" target="com.project.Model.Personnel">
+      <point x="20.4375" y="-14.5" />
+      <point x="485.4543535012284" y="198.0" />
+      <point x="840.0611895986893" y="198.0" />
+      <point x="-31.25" y="14.5" />
+    </edge>
+    <edge source="com.project.Model.ClientDetail" target="com.project.Model.Client">
+      <point x="27.25" y="-14.5" />
+      <point x="417.53926852989366" y="416.0" />
+      <point x="465.0168535012284" y="416.0" />
+      <point x="-19.75" y="14.5" />
+    </edge>
+    <edge source="com.project.Model.Personnel" target="com.project.Model.TimeTable">
+      <point x="18.75" y="-14.5" />
+      <point x="890.0611895986893" y="89.0" />
+      <point x="950.04375" y="89.0" />
+      <point x="-32.5" y="14.5" />
+    </edge>
+    <edge source="com.project.Service.AdministratorServiceImpl" target="com.project.Model.Client">
+      <point x="-16.54545454545456" y="-14.5" />
+      <point x="622.368813984439" y="535.0" />
+      <point x="611.2892685298937" y="535.0" />
+      <point x="611.2892685298937" y="416.0" />
+      <point x="504.5168535012284" y="416.0" />
+      <point x="19.75" y="14.5" />
+    </edge>
+    <edge source="com.project.Service.AdministratorServiceImpl" target="com.project.Repository.ClientRepository">
+      <point x="-33.09090909090912" y="-14.5" />
+      <point x="605.8233594389844" y="495.0" />
+      <point x="567.0392685298937" y="495.0" />
+      <point x="33.75" y="14.5" />
+    </edge>
+    <edge source="com.project.Repository.ServiceRepository" target="com.project.Model.Service">
+      <point x="0.0" y="-14.5" />
+      <point x="92.69551852989366" y="59.0" />
+      <point x="420.2668535012284" y="59.0" />
+      <point x="-34.0" y="14.5" />
+    </edge>
+    <edge source="com.project.Controller.RestController" target="com.project.Model.ServiceWrapper">
+      <point x="0.0" y="-14.5" />
+      <point x="775.8111895986893" y="426.0" />
+      <point x="759.743622031122" y="426.0" />
+      <point x="759.743622031122" y="178.0" />
+      <point x="756.243622031122" y="178.0" />
+      <point x="32.5" y="14.5" />
+    </edge>
+    <edge source="com.project.Repository.TimeTableRepository" target="com.project.Model.TimeTable">
+      <point x="0.0" y="-14.5" />
+      <point x="1159.2168535012283" y="89.0" />
+      <point x="1015.04375" y="89.0" />
+      <point x="32.5" y="14.5" />
+    </edge>
+    <edge source="com.project.Repository.ReservationRepository" target="com.project.Model.Reservation">
+      <point x="41.25" y="-14.5" />
+      <point x="241.57051852989366" y="307.0" />
+      <point x="417.3293535012284" y="307.0" />
+      <point x="-47.6875" y="14.5" />
+    </edge>
+    <edge source="com.project.Service.AdministratorServiceImpl" target="com.project.Model.TimeTable">
+      <point x="82.72727272727275" y="-14.5" />
+      <point x="721.6415412571664" y="615.0" />
+      <point x="1268.5611895986895" y="615.0" />
+      <point x="1268.5611895986895" y="79.0" />
+      <point x="1028.04375" y="79.0" />
+      <point x="45.5" y="14.5" />
+    </edge>
+    <edge source="com.project.Model.Service" target="com.project.Model.Personnel">
+      <point x="34.0" y="14.5" />
+      <point x="488.2668535012284" y="59.0" />
+      <point x="852.5611895986893" y="59.0" />
+      <point x="-18.75" y="-14.5" />
+    </edge>
+    <edge source="com.project.Service.ClientServiceImpl" target="com.project.Repository.TimeTableRepository">
+      <point x="63.636363636363626" y="-14.5" />
+      <point x="518.9256321662573" y="595.0" />
+      <point x="1119.2168535012283" y="595.0" />
+      <point x="-40.0" y="14.5" />
+    </edge>
+    <edge source="com.project.Service.AdministratorServiceImpl" target="com.project.Model.ServiceWrapper">
+      <point x="16.545454545454504" y="-14.5" />
+      <point x="655.4597230753482" y="535.0" />
+      <point x="693.7668535012284" y="535.0" />
+      <point x="693.7668535012284" y="178.0" />
+      <point x="691.243622031122" y="178.0" />
+      <point x="-32.5" y="14.5" />
+    </edge>
+    <edge source="com.project.Service.AdministratorServiceImpl" target="com.project.Repository.TimeTableRepository">
+      <point x="66.18181818181819" y="-14.5" />
+      <point x="705.0960867117118" y="605.0" />
+      <point x="1199.2168535012283" y="605.0" />
+      <point x="40.0" y="14.5" />
+    </edge>
+    <edge source="com.project.Service.ClientServiceImpl" target="com.project.Model.Personnel">
+      <point x="25.45454545454544" y="-14.5" />
+      <point x="480.7438139844391" y="545.0" />
+      <point x="869.7168535012283" y="545.0" />
+      <point x="869.7168535012283" y="238.0" />
+      <point x="890.0611895986893" y="238.0" />
+      <point x="18.75" y="14.5" />
+    </edge>
+    <edge source="com.project.Service.AdministratorServiceImpl" target="com.project.Repository.ReservationRepository">
+      <point x="-66.18181818181822" y="-14.5" />
+      <point x="572.7324503480754" y="515.0" />
+      <point x="206.2668535012284" y="515.0" />
+      <point x="206.2668535012284" y="426.0" />
+      <point x="241.57051852989366" y="426.0" />
+      <point x="41.25" y="14.5" />
+    </edge>
+    <edge source="com.project.Model.Personnel" target="com.project.Model.Service">
+      <point x="-31.25" y="-14.5" />
+      <point x="840.0611895986893" y="69.0" />
+      <point x="482.60018683456167" y="69.0" />
+      <point x="28.333333333333314" y="14.5" />
+    </edge>
+    <edge source="com.project.Controller.RestController" target="com.project.Model.Client">
+      <point x="-49.19999999999999" y="-14.5" />
+      <point x="726.6111895986894" y="406.0" />
+      <point x="517.683520167895" y="406.0" />
+      <point x="32.91666666666666" y="14.5" />
+    </edge>
+    <edge source="com.project.Service.ClientServiceImpl" target="com.project.Repository.ServiceRepository">
+      <point x="-50.90909090909088" y="-14.5" />
+      <point x="404.3801776208028" y="605.0" />
+      <point x="57.44551852989366" y="605.0" />
+      <point x="-35.25" y="14.5" />
+    </edge>
+    <edge source="com.project.Service.ClientServiceImpl" target="com.project.Repository.ReservationRepository">
+      <point x="-38.18181818181816" y="-14.5" />
+      <point x="417.10745034807553" y="595.0" />
+      <point x="195.2668535012284" y="595.0" />
+      <point x="195.2668535012284" y="426.0" />
+      <point x="159.07051852989366" y="426.0" />
+      <point x="-41.25" y="14.5" />
+    </edge>
+    <edge source="com.project.Repository.ClientRepository" target="com.project.Model.Client">
+      <point x="0.0" y="-14.5" />
+      <point x="533.2892685298937" y="426.0" />
+      <point x="491.3501868345617" y="426.0" />
+      <point x="6.583333333333329" y="14.5" />
+    </edge>
+    <edge source="com.project.Model.Service" target="com.project.Model.Reservation">
+      <point x="-11.333333333333314" y="14.5" />
+      <point x="442.93352016789504" y="99.0" />
+      <point x="432.2668535012284" y="99.0" />
+      <point x="432.2668535012284" y="238.0" />
+      <point x="430.9543535012284" y="238.0" />
+      <point x="-34.0625" y="-14.5" />
+    </edge>
+    <edge source="com.project.Service.ClientServiceImpl" target="com.project.Model.Client">
+      <point x="0.0" y="-14.5" />
+      <point x="455.28926852989366" y="426.0" />
+      <point x="478.18352016789504" y="426.0" />
+      <point x="-6.583333333333343" y="14.5" />
+    </edge>
+    <edge source="com.project.Controller.RestController" target="com.project.Model.Personnel">
+      <point x="24.599999999999994" y="-14.5" />
+      <point x="800.4111895986894" y="416.0" />
+      <point x="841.118622031122" y="416.0" />
+      <point x="841.118622031122" y="228.0" />
+      <point x="877.5611895986893" y="228.0" />
+      <point x="6.25" y="14.5" />
+    </edge>
+    <edge source="com.project.Model.TimeTable" target="com.project.Model.Personnel">
+      <point x="-19.5" y="14.5" />
+      <point x="963.04375" y="99.0" />
+      <point x="902.5611895986893" y="99.0" />
+      <point x="31.25" y="-14.5" />
+    </edge>
+    <edge source="com.project.Service.AdministratorServiceImpl" target="com.project.Model.Personnel">
+      <point x="49.636363636363626" y="-14.5" />
+      <point x="688.5506321662572" y="575.0" />
+      <point x="1046.7168535012283" y="575.0" />
+      <point x="1046.7168535012283" y="228.0" />
+      <point x="915.0611895986893" y="228.0" />
+      <point x="43.75" y="14.5" />
+    </edge>
+    <edge source="com.project.Repository.PersonnelRepository" target="com.project.Model.Personnel">
+      <point x="0.0" y="-14.5" />
+      <point x="958.2168535012283" y="238.0" />
+      <point x="902.5611895986893" y="238.0" />
+      <point x="31.25" y="14.5" />
+    </edge>
+    <edge source="com.project.Service.AdministratorServiceImpl" target="com.project.Repository.ServiceRepository">
+      <point x="-82.72727272727278" y="-14.5" />
+      <point x="556.1869958026208" y="525.0" />
+      <point x="127.94551852989366" y="525.0" />
+      <point x="35.25" y="14.5" />
+    </edge>
+    <edge source="com.project.Model.Client" target="com.project.Model.Reservation">
+      <point x="-9.875" y="-14.5" />
+      <point x="474.8918535012284" y="327.0" />
+      <point x="471.8293535012284" y="327.0" />
+      <point x="6.8125" y="14.5" />
+    </edge>
+    <edge source="com.project.Service.ClientServiceImpl" target="com.project.Repository.PersonnelRepository">
+      <point x="38.18181818181819" y="-14.5" />
+      <point x="493.47108671171185" y="555.0" />
+      <point x="919.2168535012283" y="555.0" />
+      <point x="-39.0" y="14.5" />
+    </edge>
+    <edge source="com.project.Model.Personnel" target="com.project.Model.Reservation">
+      <point x="-18.75" y="14.5" />
+      <point x="852.5611895986893" y="208.0" />
+      <point x="499.0793535012284" y="208.0" />
+      <point x="34.0625" y="-14.5" />
+    </edge>
+    <edge source="com.project.Service.AdministratorServiceImpl" target="com.project.Model.Reservation">
+      <point x="0.0" y="-14.5" />
+      <point x="638.9142685298937" y="535.0" />
+      <point x="634.087372031122" y="535.0" />
+      <point x="634.087372031122" y="307.0" />
+      <point x="512.7043535012284" y="307.0" />
+      <point x="47.6875" y="14.5" />
+    </edge>
+    <edge source="com.project.Service.ClientServiceImpl" target="com.project.Model.Service">
+      <point x="-63.6363636363636" y="-14.5" />
+      <point x="391.65290489353004" y="615.0" />
+      <point x="0.0" y="615.0" />
+      <point x="0.0" y="49.0" />
+      <point x="414.60018683456167" y="49.0" />
+      <point x="-39.666666666666686" y="14.5" />
+    </edge>
+    <edge source="com.project.Model.Reservation" target="com.project.Model.Service">
+      <point x="-20.4375" y="-14.5" />
+      <point x="444.5793535012284" y="238.0" />
+      <point x="443.2668535012284" y="238.0" />
+      <point x="443.2668535012284" y="109.0" />
+      <point x="448.60018683456167" y="109.0" />
+      <point x="-5.666666666666686" y="14.5" />
+    </edge>
+    <edge source="com.project.Controller.RestController" target="com.project.Model.Service">
+      <point x="-24.599999999999994" y="-14.5" />
+      <point x="751.2111895986893" y="396.0" />
+      <point x="648.243622031122" y="396.0" />
+      <point x="648.243622031122" y="109.0" />
+      <point x="459.93352016789504" y="109.0" />
+      <point x="5.666666666666686" y="14.5" />
+    </edge>
+    <edge source="com.project.Service.AdministratorServiceImpl" target="com.project.Repository.PersonnelRepository">
+      <point x="33.090909090909065" y="-14.5" />
+      <point x="672.0051776208027" y="565.0" />
+      <point x="997.2168535012283" y="565.0" />
+      <point x="39.0" y="14.5" />
+    </edge>
+    <edge source="com.project.Repository.ReservationRepository" target="com.project.Model.Service">
+      <point x="-41.25" y="-14.5" />
+      <point x="159.07051852989366" y="69.0" />
+      <point x="425.93352016789504" y="69.0" />
+      <point x="-28.333333333333314" y="14.5" />
+    </edge>
+    <edge source="com.project.Service.ClientServiceImpl" target="com.project.Model.TimeTable">
+      <point x="50.90909090909091" y="-14.5" />
+      <point x="506.19835943898454" y="585.0" />
+      <point x="1068.7168535012283" y="585.0" />
+      <point x="1068.7168535012283" y="99.0" />
+      <point x="1002.04375" y="99.0" />
+      <point x="19.5" y="14.5" />
+    </edge>
+    <edge source="com.project.Service.ClientServiceImpl" target="com.project.Repository.ClientRepository">
+      <point x="12.72727272727272" y="-14.5" />
+      <point x="468.0165412571664" y="535.0" />
+      <point x="499.53926852989366" y="535.0" />
+      <point x="-33.75" y="14.5" />
+    </edge>
+    <edge source="com.project.Service.AdministratorServiceImpl" target="com.project.Model.Service">
+      <point x="-49.636363636363654" y="-14.5" />
+      <point x="589.2779048935299" y="505.0" />
+      <point x="293.32051852989366" y="505.0" />
+      <point x="293.32051852989366" y="79.0" />
+      <point x="431.60018683456167" y="79.0" />
+      <point x="-22.666666666666686" y="14.5" />
+    </edge>
+    <edge source="com.project.Service.ClientServiceImpl" target="com.project.Model.Reservation">
+      <point x="-25.45454545454544" y="-14.5" />
+      <point x="429.8347230753482" y="585.0" />
+      <point x="314.28926852989366" y="585.0" />
+      <point x="314.28926852989366" y="317.0" />
+      <point x="430.9543535012284" y="317.0" />
+      <point x="-34.0625" y="14.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="604.6666666666666" y="486.6111111111112" />
+  <SelectedNodes>
+    <node>com.project.Repository.ClientRepository</node>
+  </SelectedNodes>
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

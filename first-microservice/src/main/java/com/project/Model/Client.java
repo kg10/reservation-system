@@ -20,7 +20,7 @@ public class Client {
 	@ApiModelProperty(notes = "User`s login", required = true)
 	@NotEmpty(message = "Please enter login!")
 	@Size(min = 4, max = 15, message = "4-15 Signs")
-//	@Column(unique = true)
+	@Column(unique = true)
 	private String login;
 	@ApiModelProperty(notes = "User`s password", required = true)
 	@NotEmpty(message = "Please enter login!")
@@ -46,15 +46,6 @@ public class Client {
 	}
 
 	public Client(Client client) {
-	}
-
-	public Client(String login, String password, String firstName, String lastName, String email, Boolean active) {
-		this.login = login;
-		this.password = password;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
-		this.active = active;
 	}
 
 	public Client(Long id, String login, String password, String role, String firstName, String lastName, String email,

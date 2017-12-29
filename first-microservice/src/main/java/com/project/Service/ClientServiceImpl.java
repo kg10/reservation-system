@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.project.Model.*;
+import com.project.Model.Rest.ClientResponse;
 import com.project.Model.Rest.HistoryReservation;
 import com.project.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,12 +38,12 @@ public class ClientServiceImpl implements ClientService {
 
 	@Override
 	public List<Personnel> findPersonnels(Long id) {
-		return personnelRepository.findByService_Id(id);
+		return personnelRepository.findByActiveTrueAndService_Id(id);
 	}
 
 	@Override
 	public List<Personnel> findAllPersonnel() {
-		return personnelRepository.findAll();
+		return personnelRepository.findByActiveTrue();
 	}
 
 	@Override
@@ -51,16 +52,27 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public void createNewAccount(Client client) {
+	public Long createNewAccount(Client client) {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		client.setPassword(passwordEncoder.encode(client.getPassword()));
 		client.setRole("USER");
-		clientRepository.save(client);
+		return clientRepository.saveAndFlush(client).getId();
 	}
 
 	@Override
 	public Client findOneByLogin(String login) {
 		return clientRepository.findOneByLogin(login);
+	}
+
+	@Override
+	public ClientResponse findClient(String login) {
+		Client client = clientRepository.findByLogin(login);
+		ClientResponse response = new ClientResponse();
+		response.setId(client.getId());
+		response.setEmail(client.getEmail());
+		response.setFirstName(client.getFirstName());
+		response.setLastName(client.getLastName());
+		return response;
 	}
 
 	@Override
@@ -75,7 +87,19 @@ public class ClientServiceImpl implements ClientService {
 		Service service = serviceRepository.findOneById(reservationRequest.getIdService());
 		if (person == null || service == null)
 			return false;
+
 		Reservation reservation = reservationRequest.getReservation();
+		List<String> listTime = checkFreeTime(reservation.getDate(),reservationRequest.getIdPersonnel(), reservationRequest.getIdService());
+
+
+//
+//		if(!listTime.contains(reservation.getTimeFrom().toString()) || !listTime.contains(reservation.getTimeTo().toString())) {
+//			System.out.println("return false!");
+//			return false;
+//		}
+
+//		int amount = listTime.indexOf(reservation.getTimeTo().toString()) - listTime.indexOf(reservation.getTimeFrom().toString());
+
 		reservation.setPersonnel(person);
 		reservation.setService(service);
 		reservation.setClient(client);
@@ -84,6 +108,10 @@ public class ClientServiceImpl implements ClientService {
 		LocalTime result = t1.plusHours(t2.getHour()).plusMinutes(t2.getMinute());
 		reservation.setTimeTo(Time.valueOf(result));
 
+		if(!listTime.contains(t1.toString().substring(0,5))) {
+			return false;
+		}
+
 		reservationRepository.save(reservation);
 		return true;
 	}
@@ -91,9 +119,7 @@ public class ClientServiceImpl implements ClientService {
 	@Override
 	public void disableReservation(String descriptionService, Long id, Date date) {
 		Service serviceId = serviceRepository.findByDescriptionService(descriptionService);
-		Reservation reservation = reservationRepository.findOneByServiceAndDate(serviceId, date); // tutaj trzeba
-																									// dołożyć jeszcze
-																									// login klienta
+		Reservation reservation = reservationRepository.findOneByServiceAndDate(serviceId, date);
 		reservation.setStatus(false);
 		reservationRepository.save(reservation);
 
@@ -103,7 +129,7 @@ public class ClientServiceImpl implements ClientService {
 	public List<String> checkFreeTime(Date date, Long id, Long idService) {
 		TimeTable timeTable = timeTableRepository.findByDayAndPersonnel_Id(Convert.convertDateToDay(date),
 				id);
-		List<Reservation> reservations = reservationRepository.findByDateAndPersonnel_IdOrderByTimeFromAsc(date,
+		List<Reservation> reservations = reservationRepository.findByDateAndStatusTrueAndPersonnel_IdOrderByTimeFromAsc(date,
 				id);
 		Service service = serviceRepository.findOneById(idService);
 		List<FreeTimeResponse> times = new ArrayList<>();
@@ -171,5 +197,14 @@ public class ClientServiceImpl implements ClientService {
 		Reservation reservation = reservationRepository.findOneById(id);
 		reservation.setStatus(status);
 		reservationRepository.save(reservation);
+	}
+
+	@Override
+	public void updateClient(Long id, Client client) {
+		Client clientToUpdate = clientRepository.findById(id);
+		clientToUpdate.setFirstName(client.getFirstName());
+		clientToUpdate.setLastName(client.getLastName());
+		clientToUpdate.setEmail(client.getEmail());
+		clientRepository.save(clientToUpdate);
 	}
 }

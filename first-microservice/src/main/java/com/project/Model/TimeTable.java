@@ -23,7 +23,8 @@ public class TimeTable {
 	private Integer day;
 	private Time timeFrom;
 	private Time timeTo;
-	@ManyToOne(cascade = CascadeType.ALL)
+//	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "personnel_id")
 	private Personnel personnel;
 

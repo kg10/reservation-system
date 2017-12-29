@@ -6,16 +6,26 @@ public class Address {
     private String street;
     private Integer numberStreet;
     private String postalCode;
+    private Long personnelId;
 
     public Address() {
     }
 
-    public Address(Long id, String city, String street, Integer numberStreet, String postalCode) {
+    public Address(Long id, String city, String street, Integer numberStreet, String postalCode, Long personnelId) {
         this.id = id;
         this.city = city;
         this.street = street;
         this.numberStreet = numberStreet;
         this.postalCode = postalCode;
+        this.personnelId = personnelId;
+    }
+
+    public Long getPersonnelId() {
+        return personnelId;
+    }
+
+    public void setPersonnelId(Long personnelId) {
+        this.personnelId = personnelId;
     }
 
     public Long getId() {

@@ -135,7 +135,7 @@ public class AdministratorServiceImpl implements AdministratorService {
 
 	@Override
 	public void deleteTimeTable(Long idPerson) {
-		timeTableRepository.deleteByPersonnel_Id(idPerson);
+		timeTableRepository.deleteByPersonnelId(idPerson);
 	}
 
 	@Override

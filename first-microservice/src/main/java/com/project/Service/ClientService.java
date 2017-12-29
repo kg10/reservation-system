@@ -1,6 +1,7 @@
 package com.project.Service;
 
 import com.project.Model.*;
+import com.project.Model.Rest.ClientResponse;
 import com.project.Model.Rest.FreeTimeResponse;
 import com.project.Model.Rest.HistoryReservation;
 import com.project.Model.Rest.ReservationRequest;
@@ -26,11 +27,14 @@ public interface ClientService {
 
 	List<Service> findAllServices();
 
-	void createNewAccount(Client client);
+	Long createNewAccount(Client client);
 
 	Client findOneByLogin(String login);
 
 	List<HistoryReservation> getAllReservationByLogin(String login);
 
 	void disableReserv(Long id, Boolean status);
+	ClientResponse findClient(String login);
+	void updateClient(Long id, Client client);
+
 }
