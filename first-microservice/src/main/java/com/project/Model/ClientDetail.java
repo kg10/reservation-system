@@ -50,9 +50,9 @@ public class ClientDetail extends Client implements UserDetails {
 		return super.getActive();
 	}
 
-	@Override
-	public String getPassword(){
-		return super.getPassword();
-	}
+//	@Override
+//	public String getPassword(){
+//		return super.getPassword();
+//	}
 
 }

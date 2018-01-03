@@ -5,7 +5,7 @@ import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-//////////////////////// zakomentowane do testow bez dockera
+
 @FeignClient("client")
 public interface AddressClient {
 

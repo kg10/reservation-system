@@ -15,6 +15,7 @@ import java.util.List;
 
 @RestController
 @Api(value="Second microservice", description="Operations to something else... ")
+@CrossOrigin
 public class FeignController {
 //działało jak był podany url!!!
 

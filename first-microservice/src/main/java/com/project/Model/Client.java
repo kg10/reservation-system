@@ -11,8 +11,11 @@ import org.hibernate.validator.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
+import java.io.Serializable;
+
 @Entity
-public class Client {
+public class Client implements Serializable {
+	private static final long serialVersionUID = 1L;
 	@ApiModelProperty(notes = "The database generated user ID")
 	@Id
 	@GeneratedValue

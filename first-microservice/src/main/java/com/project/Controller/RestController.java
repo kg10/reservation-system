@@ -22,12 +22,14 @@ import com.project.Service.ClientService;
 @org.springframework.web.bind.annotation.RestController
 @RequestMapping("/reg")
 @Api(value = "Main microservice", description = "Operations for booking services")
+//@CrossOrigin(origins = {"http://192.168.99.100:8073"})
 @CrossOrigin
 public class RestController {
     @Autowired
     private AdministratorService administratorService;
     @Autowired
     private ClientService clientService;
+
 
     @GetMapping(value = "/login")
     public ResponseEntity<String> login(@RequestParam String login) {
@@ -43,6 +45,22 @@ public class RestController {
             return new ResponseEntity<String>(HttpStatus.UNAUTHORIZED);
         }
     }
+
+//    @GetMapping(value = "/login2/{login}")
+//    public ResponseEntity<String> login2(@PathVariable("login") String login) {
+//        try {
+//            Client client= clientService.findOneByLogin(login);
+//
+//            if(client.getRole().equals("USER"))
+//                return new ResponseEntity<String>(JSONObject.quote(client.getRole()),HttpStatus.OK);
+//            else if(client.getRole().equals("ADMIN"))
+//                return new ResponseEntity<String>(JSONObject.quote(client.getRole()),HttpStatus.ACCEPTED);
+//            else
+//                throw new Exception();
+//        } catch (Exception e) {
+//            return new ResponseEntity<String>(HttpStatus.UNAUTHORIZED);
+//        }
+//    }
 
     @ApiOperation(value = "Registation user")
     @PostMapping(value = "/addClient", consumes = MediaType.APPLICATION_JSON_VALUE)
