@@ -3,6 +3,11 @@ spring:
     name: client
 server:
   port: 8071
+#  ssl:
+#    trust-store: classpath:keystore.p12
+#    trust-store-password: adminek
+#    trust-store-type: PKCS12
+#    trust-alias: tomcat
 
 eureka:
   instance:

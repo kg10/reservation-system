@@ -1,5 +1,7 @@
 package com.project.Controller;
 
+import java.nio.charset.Charset;
+
 import java.util.Date;
 import java.util.List;
 
@@ -7,13 +9,18 @@ import com.project.Model.*;
 import com.project.Model.Rest.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.codec.binary.Base64;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
+
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import com.project.Service.AdministratorService;
@@ -32,18 +39,35 @@ public class RestController {
 
 
     @GetMapping(value = "/login")
-    public ResponseEntity<String> login(@RequestParam String login) {
+    public ResponseEntity<String> login(@RequestParam String login, @RequestHeader HttpHeaders headers) {
         try {
+//            BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+//            String auth = headers.get("Authorization").toString();
+//            auth = auth.substring(7,auth.length()-1);
+//
             Client client= clientService.findOneByLogin(login);
-            if(client.getRole().equals("USER"))
-                return new ResponseEntity<String>(JSONObject.quote(client.getRole()),HttpStatus.OK);
-            else if(client.getRole().equals("ADMIN"))
-                return new ResponseEntity<String>(JSONObject.quote(client.getRole()),HttpStatus.ACCEPTED);
-            else
-                throw new Exception();
+//            if(bCryptPasswordEncoder.matches(decode(auth)[1], client.getPassword())) {
+                System.out.print("ok ;)");
+                if (client.getRole().equals("USER"))
+                    return new ResponseEntity<String>(JSONObject.quote(client.getRole()), HttpStatus.OK);
+                else if (client.getRole().equals("ADMIN"))
+                    return new ResponseEntity<String>(JSONObject.quote(client.getRole()), HttpStatus.ACCEPTED);
+                else
+                    throw new Exception();
+//            }
+//            else
+//                return new ResponseEntity<String>(HttpStatus.UNAUTHORIZED);
         } catch (Exception e) {
             return new ResponseEntity<String>(HttpStatus.UNAUTHORIZED);
         }
+    }
+
+    private static String[] decode(final String encoded) {
+        final byte[] decodedBytes
+                = Base64.decodeBase64(encoded.getBytes());
+        final String pair = new String(decodedBytes);
+        final String[] userDetails = pair.split(":", 2);
+        return userDetails;
     }
 
 //    @GetMapping(value = "/login2/{login}")
@@ -171,7 +195,7 @@ public class RestController {
             return new ResponseEntity<List<Service>>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+//    @PreAuthorize("hasAnyRole('USER')")
     @GetMapping(value = "/findAllServices")
     public ResponseEntity<List<Service>> findAllServices() {
         try {

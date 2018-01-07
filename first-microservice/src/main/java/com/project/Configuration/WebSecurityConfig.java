@@ -5,10 +5,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,6 +27,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 @Configuration
 @EnableWebSecurity
+//@EnableGlobalMethodSecurityhodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -45,24 +49,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
 //                .anyRequest().authenticated()
                 //.antMatchers("/reg/**").denyAll()
-                .antMatchers("/reg/findAllServices").hasAnyAuthority("USER")
+//                .antMatchers("/reg/findAllServices").hasAnyAuthority("USER")
 //                .antMatchers("/reg/login").hasAnyAuthority("USER","ADMIN")
-                .antMatchers("/reg/register").permitAll()
-                .antMatchers("/reg/**").permitAll()
+//                .antMatchers("/reg/register").permitAll()
+                .antMatchers("/reg/**").hasAnyAuthority("USER","ADMIN")
+//                .antMatchers("/reg/**").permitAll()
 //                .anyRequest().fullyAuthenticated()
 //                .anyRequest().authenticated()
-
-                .and().httpBasic().authenticationEntryPoint(getBasicAuthEntryPoint())
+                    .and().httpBasic()
+                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER)
+                //.and().addFilterBefore()
+//                .and().httpBasic().authenticationEntryPoint(getBasicAuthEntryPoint())
                 .and().csrf().disable();
 //                .and().csrf();
-
+        http.cors().disable();
     }
 
     @Bean
     public MyBasicAuthenticationEntryPoint getBasicAuthEntryPoint(){
         return new MyBasicAuthenticationEntryPoint();
     }
-
+//
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**");
@@ -83,14 +90,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new ClientServiceImpl();
     }
 
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurerAdapter() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**");
-            }
-        };
-    }
+//    @Bean
+//    public WebMvcConfigurer corsConfigurer() {
+//        return new WebMvcConfigurerAdapter() {
+//            @Override
+//            public void addCorsMappings(CorsRegistry registry) {
+//                registry.addMapping("/**");
+//            }
+//        };
+//    }
 
 }

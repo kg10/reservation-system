@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashSet;
 import java.util.Set;
 
-@Service()
+@Service
 public class ClientDetailService implements UserDetailsService {
     @Autowired
     private ClientRepository clientRepository;
@@ -36,7 +36,7 @@ public class ClientDetailService implements UserDetailsService {
                 throw new UsernameNotFoundException("No active user with login " + login);
             else {
                 //System.out.println(grantedAuthorities);
-                return new org.springframework.security.core.userdetails.User(client.getLogin(), client.getPassword(), grantedAuthorities);
+                return new org.springframework.security.core.userdetails.User(client.getLogin(), client.getPassword(),true,true,true,true, grantedAuthorities);
 //            return new ClientDetail(client);
             }
         } catch (Exception e) {
