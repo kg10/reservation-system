@@ -14,47 +14,27 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@Api(value="Second microservice", description="Operations to something else... ")
+@Api(value="Second microservice", description="Api with address")
 @CrossOrigin
 public class FeignController {
-//działało jak był podany url!!!
-
-//    private static <T> T createClient(Class<T> type, String uri) {
-//        return Feign.builder()
-//                .client(new OkHttpClient())
-//                .encoder(new GsonEncoder())
-//                .decoder(new GsonDecoder())
-//                .logger(new Slf4jLogger(type))
-//                .logLevel(Logger.Level.FULL)
-//                .target(type, uri);
-//    }
-//
-//    @RequestMapping("/getAddress")
-//    //@RequestLine("GET")
-//    public ResponseEntity<List<Address>> getAddress(){
-////        String url = "http://CLIENT/getAddress";
-//        String url = "http://CLIENT/";
-//        return new ResponseEntity<List<Address>>(createClient(AddressClient.class, url).findAddress(), HttpStatus.OK);
-//    }
-///////////////////////////////////////////
     @Autowired
     private AddressClient addressClient;
 
     @GetMapping("/getAllAddress")
     public ResponseEntity<List<Address>> getAddress(){
         try{
-        return new ResponseEntity<List<Address>>(addressClient.getAllAddress(),HttpStatus.OK);
+        return new ResponseEntity<>(addressClient.getAllAddress(),HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<List<Address>>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/getAddress/{id}")
     public ResponseEntity<Address> getAddressById(@PathVariable Long id){
         try{
-        return new ResponseEntity<Address>(addressClient.getAddress(id), HttpStatus.OK);
+        return new ResponseEntity<>(addressClient.getAddress(id), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<Address>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -62,9 +42,9 @@ public class FeignController {
     public ResponseEntity<Void> addAddress(@RequestBody Address address){
        try{
         addressClient.addAddress(address);
-           return new ResponseEntity<Void>(HttpStatus.CREATED);
+           return new ResponseEntity<>(HttpStatus.CREATED);
        } catch (Exception e) {
-           return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+           return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
        }
     }
 
@@ -72,9 +52,9 @@ public class FeignController {
     public ResponseEntity<Void> editAddress(@PathVariable Long id, @RequestBody Address address){
         try{
         addressClient.updateAddress(id, address);
-            return new ResponseEntity<Void>(HttpStatus.CREATED);
+            return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (Exception e) {
-            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

@@ -1,12 +1,10 @@
 package com.project.Service;
 
 import com.project.Model.Client;
-import com.project.Model.ClientDetail;
 import com.project.Repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -35,9 +33,7 @@ public class ClientDetailService implements UserDetailsService {
             else if (!client.getActive())
                 throw new UsernameNotFoundException("No active user with login " + login);
             else {
-                //System.out.println(grantedAuthorities);
                 return new org.springframework.security.core.userdetails.User(client.getLogin(), client.getPassword(),true,true,true,true, grantedAuthorities);
-//            return new ClientDetail(client);
             }
         } catch (Exception e) {
             e.printStackTrace();

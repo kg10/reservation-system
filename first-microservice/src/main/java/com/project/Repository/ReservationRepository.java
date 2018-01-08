@@ -9,15 +9,15 @@ import com.project.Model.Reservation;
 import com.project.Model.Service;
 
 public interface ReservationRepository extends CrudRepository<Reservation, Long> {
-	List<Reservation> findAll();
+    List<Reservation> findAll();
 
-	List<Reservation> findByPersonnel_LastName(String lastName);
+    List<Reservation> findByPersonnel_LastName(String lastName);
 
-	Reservation findOneByServiceAndDate(Service service, Date date);
+    Reservation findOneByServiceAndDate(Service service, Date date);
 
-	List<Reservation> findByDateAndStatusTrueAndPersonnel_IdOrderByTimeFromAsc(Date date, Long id);
+    List<Reservation> findByDateAndStatusTrueAndPersonnel_IdOrderByTimeFromAsc(Date date, Long id);
 
-	List<Reservation> findAllByClient_Login(String login);
+    List<Reservation> findAllByClient_Login(String login);
 
-	Reservation findOneById(Long id);
+    Reservation findOneById(Long id);
 }

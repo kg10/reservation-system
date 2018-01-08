@@ -24,16 +24,4 @@ public class FirstMicroserviceApplication {
 
 		System.out.println(hashedPassword);
 	}
-
-//	@Bean
-//	public WebMvcConfigurer corsConfigurer() {
-//		return new WebMvcConfigurerAdapter() {
-//			@Override
-//			public void addCorsMappings(CorsRegistry registry) {
-//				registry.addMapping("/api/reg/*").allowedOrigins("http://192.168.99.100:8073");
-//			}
-//		};
-//	}
-
-
 }

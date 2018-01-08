@@ -1,1 +1,3 @@
-INSERT INTO client
+-- INSERT INTO public.client(
+-- 	id, active, email, first_name, last_name, login, password, role)
+-- 	VALUES (1, 'true', 'admin@reservation.com', 'Administrator', 'Admin', 'admin', ?, ?);

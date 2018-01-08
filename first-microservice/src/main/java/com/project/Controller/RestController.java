@@ -1,7 +1,5 @@
 package com.project.Controller;
 
-import java.nio.charset.Charset;
-
 import java.util.Date;
 import java.util.List;
 
@@ -9,7 +7,6 @@ import com.project.Model.*;
 import com.project.Model.Rest.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.codec.binary.Base64;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -18,9 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
-
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import com.project.Service.AdministratorService;
@@ -29,7 +23,6 @@ import com.project.Service.ClientService;
 @org.springframework.web.bind.annotation.RestController
 @RequestMapping("/reg")
 @Api(value = "Main microservice", description = "Operations for booking services")
-//@CrossOrigin(origins = {"http://192.168.99.100:8073"})
 @CrossOrigin
 public class RestController {
     @Autowired
@@ -39,70 +32,42 @@ public class RestController {
 
 
     @GetMapping(value = "/login")
-    public ResponseEntity<String> login(@RequestParam String login, @RequestHeader HttpHeaders headers) {
+    public ResponseEntity<String> login(@RequestParam String login) {
         try {
-//            BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-//            String auth = headers.get("Authorization").toString();
-//            auth = auth.substring(7,auth.length()-1);
-//
-            Client client= clientService.findOneByLogin(login);
-//            if(bCryptPasswordEncoder.matches(decode(auth)[1], client.getPassword())) {
-                System.out.print("ok ;)");
-                if (client.getRole().equals("USER"))
-                    return new ResponseEntity<String>(JSONObject.quote(client.getRole()), HttpStatus.OK);
-                else if (client.getRole().equals("ADMIN"))
-                    return new ResponseEntity<String>(JSONObject.quote(client.getRole()), HttpStatus.ACCEPTED);
-                else
-                    throw new Exception();
-//            }
-//            else
-//                return new ResponseEntity<String>(HttpStatus.UNAUTHORIZED);
+            Client client = clientService.findOneByLogin(login);
+
+            if (client.getRole().equals("USER"))
+                return new ResponseEntity<>(JSONObject.quote(client.getRole()), HttpStatus.OK);
+            else if (client.getRole().equals("ADMIN"))
+                return new ResponseEntity<>(JSONObject.quote(client.getRole()), HttpStatus.ACCEPTED);
+            else
+                throw new Exception();
+
         } catch (Exception e) {
-            return new ResponseEntity<String>(HttpStatus.UNAUTHORIZED);
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
-
-    private static String[] decode(final String encoded) {
-        final byte[] decodedBytes
-                = Base64.decodeBase64(encoded.getBytes());
-        final String pair = new String(decodedBytes);
-        final String[] userDetails = pair.split(":", 2);
-        return userDetails;
-    }
-
-//    @GetMapping(value = "/login2/{login}")
-//    public ResponseEntity<String> login2(@PathVariable("login") String login) {
-//        try {
-//            Client client= clientService.findOneByLogin(login);
-//
-//            if(client.getRole().equals("USER"))
-//                return new ResponseEntity<String>(JSONObject.quote(client.getRole()),HttpStatus.OK);
-//            else if(client.getRole().equals("ADMIN"))
-//                return new ResponseEntity<String>(JSONObject.quote(client.getRole()),HttpStatus.ACCEPTED);
-//            else
-//                throw new Exception();
-//        } catch (Exception e) {
-//            return new ResponseEntity<String>(HttpStatus.UNAUTHORIZED);
-//        }
-//    }
 
     @ApiOperation(value = "Registation user")
     @PostMapping(value = "/addClient", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> addPerson(@RequestBody Client client) {
         try {
             administratorService.createClient(client);
-            return new ResponseEntity<Void>(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/getClient")
     public ResponseEntity<ClientResponse> getClient(@RequestParam String login) {
         try {
-            return new ResponseEntity<ClientResponse>(clientService.findClient(login),HttpStatus.OK);
+            return new ResponseEntity<>(clientService.findClient(login), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<ClientResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -111,19 +76,21 @@ public class RestController {
     public ResponseEntity<Void> disableClient(@PathVariable("id") Long id) {
         try {
             administratorService.disableClient(id);
-            return new ResponseEntity<Void>(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PutMapping(value = "/updateClient/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> editClient(@PathVariable Long id, @RequestBody Client client){
-        try{
+    public ResponseEntity<Void> editClient(@PathVariable Long id, @RequestBody Client client) {
+        try {
             clientService.updateClient(id, client);
-            return new ResponseEntity<Void>(HttpStatus.CREATED);
+            return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (Exception e) {
-            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -132,9 +99,10 @@ public class RestController {
     public ResponseEntity<Void> disablePersonnel(@PathVariable("id") Long id) {
         try {
             administratorService.disablePersonnel(id);
-            return new ResponseEntity<Void>(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -142,38 +110,42 @@ public class RestController {
     public ResponseEntity<Void> addService(@RequestBody ServiceWrapper serviceWrapper) {
         try {
             administratorService.addPersonnelAndService(serviceWrapper);
-            return new ResponseEntity<Void>(HttpStatus.CREATED);
+            return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (Exception e) {
-            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PostMapping(value = "/addPersonnel", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Long> addPersonnel(@RequestBody Personnel personnel) {
-        try{
-             return new ResponseEntity<Long>(administratorService.addPersonnel(personnel),HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(administratorService.addPersonnel(personnel), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<Long>(HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PutMapping(value = "/assign/{idPerson}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> assignPersonToService(@PathVariable Long idPerson, @RequestBody AssignRequest listDscrService) {
         try {
-            administratorService.assignPersonToService2(idPerson,listDscrService.getListDscrService());
-            return new ResponseEntity<Void>(HttpStatus.OK);
+            administratorService.assignPersonToService2(idPerson, listDscrService.getListDscrService());
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PutMapping(value = "/disableReservation/{idReservation}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> disableReservation(@PathVariable Long idReservation, @RequestBody Boolean status) {
         try {
-            clientService.disableReserv(idReservation,status);
-            return new ResponseEntity<Void>(HttpStatus.OK);
+            clientService.disableReserv(idReservation, status);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -181,54 +153,60 @@ public class RestController {
     public ResponseEntity<Void> addPersonnel(@RequestBody TimeTableRequest timeTableRequest) {
         try {
             administratorService.addTimeTableToPerson(timeTableRequest);
-            return new ResponseEntity<Void>(HttpStatus.CREATED);
+            return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (Exception e) {
-            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping(value = "/findServiceByPersonnelId")
     public ResponseEntity<List<Service>> findServiceByLastName(@RequestParam Long id) {
         try {
-            return new ResponseEntity<List<Service>>(clientService.findServices(id), HttpStatus.OK);
+            return new ResponseEntity<>(clientService.findServices(id), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<List<Service>>(HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-//    @PreAuthorize("hasAnyRole('USER')")
+
     @GetMapping(value = "/findAllServices")
     public ResponseEntity<List<Service>> findAllServices() {
         try {
-            return new ResponseEntity<List<Service>>(clientService.findAllServices(), HttpStatus.OK);
+            return new ResponseEntity<>(clientService.findAllServices(), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<List<Service>>(HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping(value = "/findHistoryService")
     public ResponseEntity<List<HistoryReservation>> findHistoryService(@RequestParam String login) {
         try {
-            return new ResponseEntity<List<HistoryReservation>>(clientService.getAllReservationByLogin(login), HttpStatus.OK);
+            return new ResponseEntity<>(clientService.getAllReservationByLogin(login), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<List<HistoryReservation>>(HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping(value = "/findAllHistory")
     public ResponseEntity<List<HistoryResponse>> findAllHistory() {
         try {
-            return new ResponseEntity<List<HistoryResponse>>(administratorService.getAllReservation(), HttpStatus.OK);
+            return new ResponseEntity<>(administratorService.getAllReservation(), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<List<HistoryResponse>>(HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping(value = "/findPersonnelByServiceId")
     public ResponseEntity<List<Personnel>> selectPersonnelByServiceName(@RequestParam Long id) {
         try {
-            return new ResponseEntity<List<Personnel>>(clientService.findPersonnels(id), HttpStatus.OK);
+            return new ResponseEntity<>(clientService.findPersonnels(id), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<List<Personnel>>(HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -236,9 +214,10 @@ public class RestController {
     public ResponseEntity<List<Personnel>> selectPersonnel() {
         try {
             System.out.println("test");
-            return new ResponseEntity<List<Personnel>>(clientService.findAllPersonnel(), HttpStatus.OK);
+            return new ResponseEntity<>(clientService.findAllPersonnel(), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<List<Personnel>>(HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -246,18 +225,20 @@ public class RestController {
     public ResponseEntity<TimeTable> checkTimeTable(@RequestParam Long id,
                                                     @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
         try {
-            return new ResponseEntity<TimeTable>(clientService.findTimeTable(id, date), HttpStatus.OK);
+            return new ResponseEntity<>(clientService.findTimeTable(id, date), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<TimeTable>(HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping(value = "/findTimeByPerson")
     public ResponseEntity<List<TimeTableResponse>> getTimeByPerson(@RequestParam Long id) {
         try {
-            return new ResponseEntity<List<TimeTableResponse>>(administratorService.getTimeByPersonelId(id), HttpStatus.OK);
+            return new ResponseEntity<>(administratorService.getTimeByPersonelId(id), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<List<TimeTableResponse>>(HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -265,85 +246,89 @@ public class RestController {
     public ResponseEntity<Void> createReservation(@RequestBody ReservationRequest reservationRequest) {
         try {
             if (clientService.addReservation(reservationRequest))
-                return new ResponseEntity<Void>(HttpStatus.CREATED);
+                return new ResponseEntity<>(HttpStatus.CREATED);
             else
-                return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    // to jest do poprawy -> dodanie id klienta
     @PutMapping(value = "/disableReservation/{id}")
     public ResponseEntity<Void> disableReservation(@RequestParam String serviceName, @PathVariable Long id,
                                                    @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
         try {
             clientService.disableReservation(serviceName, id, date);
-            return new ResponseEntity<Void>(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping(value = "/getFreeTime")
     public ResponseEntity<List<String>> checkFreeTime(@RequestParam Long id,
-                                                                @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date date, @RequestParam Long idService) {
+                                                      @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date date, @RequestParam Long idService) {
         try {
-            return new ResponseEntity<List<String>>(clientService.checkFreeTime(date, id, idService), HttpStatus.OK);
+            return new ResponseEntity<>(clientService.checkFreeTime(date, id, idService), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<List<String>>(HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Long> registerNewAcount(@RequestBody Client client) {
-        try{
-            return new ResponseEntity<Long>(clientService.createNewAccount(client), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(clientService.createNewAccount(client), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<Long>(HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PutMapping(value = "/updateService/{id}")
-    public ResponseEntity<Void> updateService ( @PathVariable Long id, @RequestBody Service service){
+    public ResponseEntity<Void> updateService(@PathVariable Long id, @RequestBody Service service) {
         try {
             administratorService.setServiceById(id, service);
-            return new ResponseEntity<Void>(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PutMapping(value = "/updatePersonnel/{id}")
-    public ResponseEntity<Void> updatePerson( @PathVariable Long id, @RequestBody Personnel person){
+    public ResponseEntity<Void> updatePerson(@PathVariable Long id, @RequestBody Personnel person) {
         try {
             administratorService.setPersonnelById(id, person);
-            return new ResponseEntity<Void>(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping(value = "/delete")
-    public ResponseEntity<Void> delete( @RequestParam Long id){
+    public ResponseEntity<Void> delete(@RequestParam Long id) {
         try {
             administratorService.deletePersonnel(id);
-            return new ResponseEntity<Void>(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping(value = "/deleteTime")
-    public ResponseEntity<Void> deleteTime( @RequestParam Long id){
+    public ResponseEntity<Void> deleteTime(@RequestParam Long id) {
         try {
             administratorService.deleteTimeTable(id);
-            return new ResponseEntity<Void>(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
-
 }

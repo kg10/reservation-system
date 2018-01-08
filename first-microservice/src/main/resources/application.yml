@@ -3,12 +3,6 @@ spring:
     name: main-service
 server:
   port: 8072
-#  ssl:
-#    key-store: /first-microservice/keystore
-#    key-store-password: adminek
-#    key-store-type: PKCS12
-#    key-alias: tomcat
-#    enabled: true
 
 eureka:
   instance:
