@@ -20,4 +20,8 @@ services:
     image: zuul-application
     ports:
     - "8073:8073"
+  angular:
+    image: angular
+    ports:
+    - "8080:80"
  
