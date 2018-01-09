@@ -16,4 +16,14 @@ Eureka - port: 8070
 Service 1 - port: 8071
 Service 2 - port: 8072 
 
+## Used in the project
+Spring 
+Spring Boot
+Spring JPA 
+Spring Security
+Spring Cloud (Feign, Eureka, Zuul)
+Swagger
+Docker 
+RESTful
+
 
