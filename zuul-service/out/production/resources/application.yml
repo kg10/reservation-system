@@ -4,20 +4,36 @@ spring:
 
 server:
   port: 8073
+#  ssl:
+#    trust-store: classpath:keystore.p12
+#    trust-store-password: adminek
+#    trust-store-type: PKCS12
+#    trust-alias: tomcat
 
 eureka:
    instance:
-     hostname: localhost
+    #hostname: localhost
+    prefer-ip-address: true
+
    client:
      registerWithEureka: true
      fetchRegistry: true
      serviceUrl:
-       defaultZone: http://localhost:8070/eureka/
+       defaultZone: http://192.168.99.100:8070/eureka/
 
 zuul:
+#  sensitiveHeaders: Authorization
   prefix: /api
   routes:
     main-service:
       path: /**
       serviceId: MAIN-SERVICE
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
 

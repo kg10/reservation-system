@@ -17,8 +17,7 @@ public class RelayTokenFilter extends ZuulFilter {
         RequestContext ctx = RequestContext.getCurrentContext();
         HttpServletRequest request = ctx.getRequest();
         ctx.addZuulRequestHeader("Authorization",request.getHeader("Authorization"));
-        LOG.info("Headers : {}", "Authorization" + "=" + request.getHeader("Authorization"));
-        System.out.println(request.getHeader("Authorization").toString());
+
         return null;
     }
 
