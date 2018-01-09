@@ -12,8 +12,11 @@ Default IP address:
 http://192.168.99.100:8080
 
 ZUUL - port: 8073
+
 Eureka - port: 8070
+
 Service 1 - port: 8071
+
 Service 2 - port: 8072 
 
 ## Used in the project
